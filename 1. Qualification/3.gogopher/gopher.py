@@ -1,14 +1,12 @@
 def gopher_api(req):
     print(req)
-    res = input('')
-    i, j = map(int, res.split())
+    i, j = map(int, input('').split())
     if i == j == 0:
         raise StopIteration
     elif i == j == -1:
-        print("req:{req}\tres:{res}. Fuckedup.".format(req=req, res=res))
         raise ValueError
     else:
-        return (int(i), int(j))
+        return (i, j)
 
 
 for case in range(int(input(''))):
@@ -28,7 +26,8 @@ for case in range(int(input(''))):
     while True:
         if all(marked[0]):
             current_row += 1
-            marked = [marked[1], marked[2], [False, False, False]]
+            marked.pop(0)
+            marked.append([False, False, False])
         try:
             i, j = gopher_api("{} {}".format(current_row, current_column))
             marked[i - current_row + 1][j - 1] = True
