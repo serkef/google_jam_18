@@ -3,21 +3,20 @@ response = "Case #{x}: {sortable}"
 
 
 def trouble_solve(l):
-    even = sorted(l[::2], reverse=True)
-    odd = sorted(l[1::2], reverse=True)
+    even = sorted(l[::2])
+    odd = sorted(l[1::2])
 
     all_troublesort = []
     for i in range(len(l)):
         if i % 2 == 0:
-            all_troublesort.append(even.pop())
+            all_troublesort.append(even.pop(0))
         else:
-            all_troublesort.append(odd.pop())
+            all_troublesort.append(odd.pop(0))
 
-    all_timsort = sorted(l)
-
-    for i, (x, y) in enumerate(zip(all_troublesort, all_timsort)):
-        if x != y:
+    for i in range(len(all_troublesort)-1):
+        if all_troublesort[i] > all_troublesort[i+1]:
             return i
+
     return 'OK'
 
 
