@@ -7,18 +7,19 @@ response = "Case #{x}: {swaps}"
 def damage(attack):
     power = 1
     damage = 0
+    shots = 0
     for instruction in attack:
         if instruction == c:
             power *= 2
         else:
+            shots += 1
             damage += power
-    return damage
+    return shots, damage
 
 
 def defense(attack, shield_power):
     attack = [x for x in attack]
-    base_damage = attack.count(s)
-    max_damage = damage(attack)
+    base_damage, max_damage = damage(attack)
     damage_diff = max_damage - shield_power
 
     if base_damage > shield_power:
@@ -26,12 +27,18 @@ def defense(attack, shield_power):
 
     swaps = 0
     while damage_diff > 0:
-        i = attack.index(c)
-        j = attack.index(s, i)
-        i = j - 1
+        # find last shoot
+        i = attack[::-1].index(s)
+        i = len(attack) - i -1
+        # find last charge prior to last shoot
+        j = attack[i::-1].index(c)
+        j = i - j
+        # in case of multiple shoots after the last charge, take the first
+        i = j + 1
         # damage of a shot is 2^number_of_prior_charges
-        damage_gain = 2 ** attack[:i].count(c)
-        attack[i], attack[j] = s, c
+        damage_gain = 2 ** attack[:j].count(c)
+        # swap
+        attack[i], attack[j] = c, s
         damage_diff -= damage_gain
         swaps += 1
 
