@@ -24,3 +24,4 @@ for case in range(int(input(''))):
 
 for result in results:
     print(result)
+    
